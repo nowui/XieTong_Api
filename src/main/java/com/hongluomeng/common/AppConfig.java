@@ -31,6 +31,7 @@ import com.hongluomeng.controller.TeacherController;
 import com.hongluomeng.controller.UploadController;
 import com.hongluomeng.controller.UserController;
 import com.hongluomeng.controller.OperationController;
+import com.hongluomeng.controller.WebConfigController;
 import com.hongluomeng.interceptor.GlobalActionInterceptor;
 import com.hongluomeng.model.Admin;
 import com.hongluomeng.model.Attribute;
@@ -55,6 +56,7 @@ import com.hongluomeng.model.Student;
 import com.hongluomeng.model.Teacher;
 import com.hongluomeng.model.User;
 import com.hongluomeng.model.UserRole;
+import com.hongluomeng.model.WebConfig;
 
 public class AppConfig extends JFinalConfig {
 
@@ -85,6 +87,7 @@ public class AppConfig extends JFinalConfig {
 		routes.add("/student", StudentController.class);
 		routes.add("/grade", GradeController.class);
 		routes.add("/course", CourseController.class);
+		routes.add("/web/config", WebConfigController.class);
 	}
 
 	public void configPlugin(Plugins plugins) {
@@ -126,6 +129,7 @@ public class AppConfig extends JFinalConfig {
 	    activeRecordPlugin.addMapping("course", "course_id", Course.class);
 	    activeRecordPlugin.addMapping("course_apply", "course_apply_id", CourseApply.class);
 	    activeRecordPlugin.addMapping("course_apply_history", "course_apply_history_id", CourseApplyHistory.class);
+	    activeRecordPlugin.addMapping("web_config", "web_config_id", WebConfig.class);
 	    plugins.add(activeRecordPlugin);
 	}
 

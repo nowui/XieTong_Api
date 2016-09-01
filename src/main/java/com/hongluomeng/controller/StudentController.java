@@ -3,10 +3,17 @@ package com.hongluomeng.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
 import com.hongluomeng.common.Const;
+import com.hongluomeng.common.MyPoiRender;
 import com.hongluomeng.common.Utility;
 import com.hongluomeng.model.Student;
 import com.hongluomeng.service.StudentService;
@@ -81,6 +88,36 @@ public class StudentController extends BaseController {
 		} else {
 	        renderJson(Utility.setResponse(CodeEnum.CODE_200, "", map));
 		}
+	}
+
+	@Before(StudentValidator.class)
+	@ActionKey(Const.URL_STUDENT_EXPORT)
+	public void export() {
+		//JSONObject jsonObject = getAttr(Const.KEY_REQUEST);
+
+		HSSFWorkbook wb = new HSSFWorkbook();
+
+		HSSFSheet sheet = wb.createSheet("test");
+		HSSFRow row = sheet.createRow((int) 0);
+		HSSFCellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+		HSSFCell cell = row.createCell(0);
+        cell.setCellValue("班别");
+        cell.setCellStyle(style);
+        cell = row.createCell(1);
+        cell.setCellValue("学号");
+        cell.setCellStyle(style);
+        cell = row.createCell(2);
+        cell.setCellValue("姓名");
+        cell.setCellStyle(style);
+        cell = row.createCell(3);
+        cell.setCellValue("性别");
+        cell.setCellStyle(style);
+
+        MyPoiRender myPoiRender = new MyPoiRender(wb, "学生信息");
+
+        render(myPoiRender);
 	}
 
 }

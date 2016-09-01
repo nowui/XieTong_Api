@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.hongluomeng.common.Utility;
+import com.hongluomeng.model.Grade;
 import com.hongluomeng.model.Student;
 
 public class StudentDao {
@@ -37,7 +38,9 @@ public class StudentDao {
 	private List<Student> list(Student student, Integer m, Integer n) {
 		List<Object> parameterList = new ArrayList<Object>();
 
-		StringBuffer sql = new StringBuffer("SELECT * FROM " + Student.KEY_STUDENT + " ");
+		StringBuffer sql = new StringBuffer("SELECT " + Student.KEY_STUDENT + ".*, " + Grade.KEY_GRADE + "." + Grade.KEY_GRADE_NAME + " AS " + Grade.KEY_GRADE_NAME + " FROM " + Student.KEY_STUDENT + " ");
+
+		sql.append("LEFT JOIN " + Grade.KEY_GRADE + " ON " + Student.KEY_STUDENT + "." + Student.KEY_GRADE_ID + " = " + Grade.KEY_GRADE + "." + Grade.KEY_GRADE_ID + " ");
 
 		Boolean isExit = false;
 
@@ -46,9 +49,9 @@ public class StudentDao {
 		} else {
 			sql.append("WHERE ");
 		}
-		sql.append(Student.KEY_STUDENT_STATUS + " = 1 ");
+		sql.append(Student.KEY_STUDENT + "." + Student.KEY_STUDENT_STATUS + " = 1 ");
 
-		sql.append("ORDER BY " + Student.KEY_STUDENT_CREATE_TIME + " DESC ");
+		sql.append("ORDER BY " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_NUMBER + " DESC ");
 
 		if (n > 0) {
 			sql.append("LIMIT ?, ? ");

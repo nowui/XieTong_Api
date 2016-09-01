@@ -87,6 +87,8 @@ public class StudentValidator extends Validator {
 				message += "密码为空";
 				message += Const.LINE_FEED;
 			}
+		} else if(actionKey.equals(Const.URL_STUDENT_EXPORT)) {
+			isExit = true;
 		}
 
 		if (! isExit) {

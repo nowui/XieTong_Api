@@ -12,7 +12,10 @@ public class Student extends Model<Student> {
 	public static final String KEY_STUDENT = "student";
 	public static final String KEY_STUDENT_ID = "student_id";
 	public static final String KEY_GRADE_ID = "grade_id";
+	public static final String KEY_GRADE_NAME = "grade_name";
+	public static final String KEY_STUDENT_NUMBER = "student_number";
 	public static final String KEY_STUDENT_NAME = "student_name";
+	public static final String KEY_STUDENT_SEX = "student_sex";
 	public static final String KEY_USER_ID = "user_id";
 	public static final String KEY_STUDENT_CREATE_USER_ID = "student_create_user_id";
 	public static final String KEY_STUDENT_CREATE_TIME = "student_create_time";
@@ -39,12 +42,36 @@ public class Student extends Model<Student> {
 		set(KEY_GRADE_ID, grade_id);
 	}
 
+	public String getGrade_name() {
+		return getStr(KEY_GRADE_NAME);
+	}
+
+	public void setGrade_name(String grade_name) {
+		set(KEY_GRADE_NAME, grade_name);
+	}
+
+	public String getStudent_number() {
+		return getStr(KEY_STUDENT_NUMBER);
+	}
+
+	public void setStudent_number(String student_number) {
+		set(KEY_STUDENT_NUMBER, student_number);
+	}
+
 	public String getStudent_name() {
 		return getStr(KEY_STUDENT_NAME);
 	}
 
 	public void setStudent_name(String student_name) {
 		set(KEY_STUDENT_NAME, student_name);
+	}
+
+	public String getStudent_sex() {
+		return getStr(KEY_STUDENT_SEX);
+	}
+
+	public void setStudent_sex(String student_sex) {
+		set(KEY_STUDENT_SEX, student_sex);
 	}
 
 	public String getUser_id() {

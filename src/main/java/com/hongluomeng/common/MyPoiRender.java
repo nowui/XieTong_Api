@@ -17,11 +17,11 @@ public class MyPoiRender extends Render {
     }
 
     public void render() {
-    	response.reset();
-        response.addHeader("Content-disposition", "attachment; filename=" + name);
-        response.setContentType("application/x-msdownload");
-
         try {
+	    	response.reset();
+	        response.addHeader("Content-disposition", "attachment; filename=" + java.net.URLEncoder.encode(name, "UTF-8") + ".xls");
+	        response.setContentType("application/x-msdownload");
+
             wb.write(response.getOutputStream());
         } catch (IOException e) {
             // TODO Auto-generated catch block

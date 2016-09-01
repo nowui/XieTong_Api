@@ -43,6 +43,7 @@ public class GlobalActionInterceptor implements Interceptor {
 		Set<String> urlSet = new HashSet<String>();
 		urlSet.add(Const.URL_STUDENT_LOGIN);
 		urlSet.add(Const.URL_ADMIN_LOGIN);
+		urlSet.add(Const.URL_STUDENT_EXPORT);
 
 		Connection connection = null;
 
@@ -103,7 +104,7 @@ public class GlobalActionInterceptor implements Interceptor {
 			}
 
 			if (isAuthorization) {
-				if (url.equals(Const.URL_UPLOAD_IMAGE)) {
+				if (url.equals(Const.URL_UPLOAD_IMAGE) || url.equals(Const.URL_STUDENT_EXPORT)) {
 					request = "{}";
 				} else {
 					request = HttpKit.readData(controller.getRequest());
@@ -131,19 +132,23 @@ public class GlobalActionInterceptor implements Interceptor {
 			}
 
 			if (isAuthorization) {
-				platform = controller.getRequest().getHeader(Const.KEY_PLATFORM);
-				version = controller.getRequest().getHeader(Const.KEY_VERSION);
-
 				String message = "";
 
-				if(Utility.isNullOrEmpty(platform)) {
-					message += "没有platform参数";
-					message += "<br />";
-				}
+				if(url.equals(Const.URL_STUDENT_EXPORT)) {
 
-				if(Utility.isNullOrEmpty(version)) {
-					message += "没有version参数";
-					message += "<br />";
+				} else {
+					platform = controller.getRequest().getHeader(Const.KEY_PLATFORM);
+					version = controller.getRequest().getHeader(Const.KEY_VERSION);
+
+					if(Utility.isNullOrEmpty(platform)) {
+						message += "没有platform参数";
+						message += "<br />";
+					}
+
+					if(Utility.isNullOrEmpty(version)) {
+						message += "没有version参数";
+						message += "<br />";
+					}
 				}
 
 				if (Utility.isNullOrEmpty(message)) {

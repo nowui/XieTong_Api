@@ -143,6 +143,7 @@ public class Const {
 	public static final String URL_STUDENT_UPDATE = "/student/update";
 	public static final String URL_STUDENT_DELETE = "/student/delete";
 	public static final String URL_STUDENT_LOGIN = "/student/login";
+	public static final String URL_STUDENT_EXPORT = "/student/export";
 	public static final String URL_GRADE_LIST = "/grade/list";
 	public static final String URL_GRADE_FIND = "/grade/find";
 	public static final String URL_GRADE_SAVE = "/grade/save";

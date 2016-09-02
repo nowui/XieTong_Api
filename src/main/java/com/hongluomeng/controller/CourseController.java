@@ -109,4 +109,10 @@ public class CourseController extends BaseController {
         renderJson(Utility.setResponse(CodeEnum.CODE_200, "", courseApplyHistoryList));
 	}
 
+	@Before(CourseValidator.class)
+	@ActionKey(Const.URL_COURSE_EXPORT)
+	public void export() {
+        render(courseService.export());
+	}
+
 }

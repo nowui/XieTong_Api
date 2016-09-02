@@ -199,10 +199,10 @@ public class StudentService {
 		HSSFWorkbook wb = new HSSFWorkbook();
 
 		HSSFSheet sheet = wb.createSheet("学生信息");
-		HSSFRow row = sheet.createRow((int) 0);
 		HSSFCellStyle style = wb.createCellStyle();
 		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 
+		HSSFRow row = sheet.createRow(0);
 		HSSFCell cell = row.createCell(0);
         cell.setCellValue("班别");
         cell.setCellStyle(style);

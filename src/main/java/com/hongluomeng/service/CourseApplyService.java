@@ -29,6 +29,10 @@ public class CourseApplyService {
 		return courseApplyDao.listByUser_id(user_id);
 	}
 
+	public List<CourseApply> listByCourse_id(String course_id) {
+		return courseApplyDao.listByCourse_id(course_id);
+	}
+
 	public void save(String course_id, String request_user_id) {
 		courseApplyDao.save(course_id, request_user_id);
 	}

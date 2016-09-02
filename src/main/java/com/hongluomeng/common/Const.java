@@ -162,6 +162,7 @@ public class Const {
 	public static final String URL_COURSE_DELETE = "/course/delete";
 	public static final String URL_COURSE_APPLY = "/course/apply";
 	public static final String URL_COURSE_HISTORY = "/course/history";
+	public static final String URL_COURSE_EXPORT = "/course/export";
 	public static final String URL_WEB_CONFIG_LIST = "/web/config/list";
 	public static final String URL_WEB_CONFIG_FIND = "/web/config/find";
 	public static final String URL_WEB_CONFIG_SAVE = "/web/config/save";

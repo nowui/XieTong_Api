@@ -8,6 +8,8 @@ import com.jfinal.plugin.activerecord.Db;
 import com.hongluomeng.common.Utility;
 import com.hongluomeng.model.CourseApply;
 import com.hongluomeng.model.Course;
+import com.hongluomeng.model.Grade;
+import com.hongluomeng.model.Student;
 
 public class CourseApplyDao {
 
@@ -164,6 +166,22 @@ public class CourseApplyDao {
 		courseApply.setUser_id(user_id);
 
 		return list(courseApply, 0, 0);
+	}
+
+	public List<CourseApply> listByCourse_id(String course_id) {
+		List<Object> parameterList = new ArrayList<Object>();
+
+		StringBuffer sql = new StringBuffer("SELECT " + CourseApply.KEY_COURSE_APPLY + ".*, " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_NAME + ", " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_NUMBER + ", " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_SEX + ", " + Grade.KEY_GRADE + "." + Grade.KEY_GRADE_NAME + " FROM " + CourseApply.KEY_COURSE_APPLY + " ");
+		sql.append("LEFT JOIN " + Student.KEY_STUDENT + " ON " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_USER_ID + " = " + Student.KEY_STUDENT + "." + Student.KEY_USER_ID + " ");
+		sql.append("LEFT JOIN " + Grade.KEY_GRADE + " ON " + Student.KEY_STUDENT + "." + Student.KEY_GRADE_ID + " = " + Grade.KEY_GRADE + "." + Grade.KEY_GRADE_ID + " ");
+
+		sql.append("WHERE " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_COURSE_APPLY_STATUS + " = 1 ");
+		sql.append("AND " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_COURSE_ID + " = ? ");
+
+		parameterList.add(course_id);
+
+		List<CourseApply> courseApplyList = new CourseApply().find(sql.toString(), parameterList.toArray());
+		return courseApplyList;
 	}
 
 	public void save(String course_id, String request_user_id) {

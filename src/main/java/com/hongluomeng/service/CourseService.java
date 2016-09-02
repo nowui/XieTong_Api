@@ -3,9 +3,16 @@ package com.hongluomeng.service;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hongluomeng.common.Const;
+import com.hongluomeng.common.MyPoiRender;
 import com.hongluomeng.common.Utility;
 import com.hongluomeng.dao.CourseDao;
 import com.hongluomeng.model.Course;
@@ -231,6 +238,122 @@ public class CourseService {
 		String request_user_id = jsonObject.getString(Const.KEY_REQUEST_USER_ID);
 
 		return courseApplyHistoryService.listByCourse_idAndUser_id(courseMap.getCourse_id(), request_user_id);
+	}
+
+	public MyPoiRender export() {
+		List<Course> courseList = courseDao.list(0, 0);
+
+		List<Teacher> teacherList = teacherService.ListAll();
+
+		HSSFWorkbook wb = new HSSFWorkbook();
+
+		for(int i = 0; i < courseList.size(); i++) {
+			Course course = courseList.get(i);
+
+			HSSFSheet sheet = wb.createSheet(i + 1 + "、" + course.getCourse_name());
+			HSSFCellStyle style = wb.createCellStyle();
+			style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+			HSSFRow row = sheet.createRow(0);
+			HSSFCell cell = row.createCell(0);
+	        cell.setCellValue("课程名称");
+	        cell.setCellStyle(style);
+	        cell = row.createCell(1);
+	        cell.setCellValue("上课时间");
+	        cell.setCellStyle(style);
+	        cell = row.createCell(2);
+	        cell.setCellValue("老师");
+	        cell.setCellStyle(style);
+	        cell = row.createCell(3);
+	        cell.setCellValue("上课地点");
+	        cell.setCellStyle(style);
+
+	        String course_class = course.getCourse_class();
+	        String course_class_name = "";
+
+	        if(course_class.equals("17")) {
+	        	course_class_name = "星期一第七节";
+	        } else if(course_class.equals("27")) {
+	        	course_class_name = "星期二第七节";
+	        } else if(course_class.equals("28")) {
+	        	course_class_name = "星期二第八节";
+	        } else if(course_class.equals("47")) {
+	        	course_class_name = "星期四第七节";
+	        } else if(course_class.equals("48")) {
+	        	course_class_name = "星期四第八节";
+	        } else if(course_class.equals("56")) {
+	        	course_class_name = "星期五第六节";
+	        }
+
+	        String teacher_name = "";
+	        JSONArray teacherArray = course.getCourse_teacher();
+	        for(int j = 0; j < teacherList.size(); j++) {
+	        	Teacher teacher = teacherList.get(j);
+
+	        	for(int k = 0; k < teacherArray.size(); k++) {
+	        		String teacher_id = teacherArray.getString(k);
+
+	        		if(teacher_id.equals(teacher.getTeacher_id())) {
+	        			teacher_name += "," + teacher.getTeacher_name();
+	        		}
+	        	}
+	        }
+	        if(teacher_name != "") {
+	        	teacher_name = teacher_name.substring(1);
+	        }
+
+			row = sheet.createRow(1);
+			cell = row.createCell(0);
+	        cell.setCellValue(course.getCourse_name());
+	        cell.setCellStyle(style);
+	        cell = row.createCell(1);
+	        cell.setCellValue(course_class_name);
+	        cell.setCellStyle(style);
+	        cell = row.createCell(2);
+	        cell.setCellValue(teacher_name);
+	        cell.setCellStyle(style);
+	        cell = row.createCell(3);
+	        cell.setCellValue(course.getCourse_address());
+	        cell.setCellStyle(style);
+
+			row = sheet.createRow(5);
+			cell = row.createCell(0);
+	        cell.setCellValue("姓名");
+	        cell.setCellStyle(style);
+	        cell = row.createCell(1);
+	        cell.setCellValue("班级");
+	        cell.setCellStyle(style);
+	        cell = row.createCell(2);
+	        cell.setCellValue("学号");
+	        cell.setCellStyle(style);
+	        cell = row.createCell(3);
+	        cell.setCellValue("性别");
+	        cell.setCellStyle(style);
+
+	        List<CourseApply> courseApplyList = courseApplyService.listByCourse_id(course.getCourse_id());
+
+	        for(int j = 0; j < courseApplyList.size(); j++) {
+	        	CourseApply courseApply = courseApplyList.get(j);
+
+    			row = sheet.createRow(i + 6);
+    			cell = row.createCell(0);
+    	        cell.setCellValue(courseApply.getStudent_name());
+    	        cell.setCellStyle(style);
+    	        cell = row.createCell(1);
+    	        cell.setCellValue(courseApply.getGrade_name());
+    	        cell.setCellStyle(style);
+    	        cell = row.createCell(2);
+    	        cell.setCellValue(courseApply.getStudent_number());
+    	        cell.setCellStyle(style);
+    	        cell = row.createCell(3);
+    	        cell.setCellValue(courseApply.getStudent_sex());
+    	        cell.setCellStyle(style);
+	        }
+		}
+
+        MyPoiRender myPoiRender = new MyPoiRender(wb, "选课信息");
+
+        return myPoiRender;
 	}
 
 }

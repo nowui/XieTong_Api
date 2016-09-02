@@ -44,6 +44,7 @@ public class GlobalActionInterceptor implements Interceptor {
 		urlSet.add(Const.URL_STUDENT_LOGIN);
 		urlSet.add(Const.URL_ADMIN_LOGIN);
 		urlSet.add(Const.URL_STUDENT_EXPORT);
+		urlSet.add(Const.URL_COURSE_EXPORT);
 
 		Connection connection = null;
 
@@ -104,7 +105,7 @@ public class GlobalActionInterceptor implements Interceptor {
 			}
 
 			if (isAuthorization) {
-				if (url.equals(Const.URL_UPLOAD_IMAGE) || url.equals(Const.URL_STUDENT_EXPORT) || url.equals(Const.URL_STUDENT_UPLOAD)) {
+				if (url.equals(Const.URL_UPLOAD_IMAGE) || url.equals(Const.URL_STUDENT_EXPORT) || url.equals(Const.URL_STUDENT_UPLOAD) || url.equals(Const.URL_COURSE_EXPORT)) {
 					request = "{}";
 				} else {
 					request = HttpKit.readData(controller.getRequest());
@@ -134,7 +135,7 @@ public class GlobalActionInterceptor implements Interceptor {
 			if (isAuthorization) {
 				String message = "";
 
-				if(url.equals(Const.URL_STUDENT_EXPORT)) {
+				if(url.equals(Const.URL_STUDENT_EXPORT) || url.equals(Const.URL_COURSE_EXPORT)) {
 
 				} else {
 					platform = controller.getRequest().getHeader(Const.KEY_PLATFORM);

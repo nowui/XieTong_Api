@@ -109,6 +109,9 @@ public class CourseValidator extends Validator {
 				message += "编号为空";
 				message += Const.LINE_FEED;
 			}
+		} else if(actionKey.equals(Const.URL_COURSE_EXPORT)) {
+			isExit = true;
+
 		}
 
 		if (! isExit) {

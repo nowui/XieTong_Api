@@ -89,6 +89,17 @@ public class StudentValidator extends Validator {
 			}
 		} else if(actionKey.equals(Const.URL_STUDENT_EXPORT)) {
 			isExit = true;
+		} else if(actionKey.equals(Const.URL_STUDENT_UPLOAD)) {
+			isExit = true;
+		} else if(actionKey.equals(Const.URL_STUDENT_DELETE_2)) {
+			isExit = true;
+
+			Student student = jsonObject.toJavaObject(Student.class);
+
+			if(Utility.isNullOrEmpty(student.getStudent_id())) {
+				message += "编号为空";
+				message += Const.LINE_FEED;
+			}
 		}
 
 		if (! isExit) {

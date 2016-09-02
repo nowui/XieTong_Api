@@ -61,6 +61,8 @@ public class GradeValidator extends Validator {
 				message += "编号为空";
 				message += Const.LINE_FEED;
 			}
+		} else if(actionKey.equals(Const.URL_GRADE_LIST_2)) {
+			isExit = true;
 		}
 
 		if (! isExit) {

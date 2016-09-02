@@ -1,5 +1,6 @@
 package com.hongluomeng.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONArray;
@@ -13,6 +14,7 @@ import com.hongluomeng.model.CourseApplyHistory;
 import com.hongluomeng.model.Grade;
 import com.hongluomeng.model.Student;
 import com.hongluomeng.model.Teacher;
+import com.hongluomeng.model.WebConfig;
 
 public class CourseService {
 
@@ -22,6 +24,7 @@ public class CourseService {
 	private StudentService studentService = new StudentService();
 	private CourseApplyService courseApplyService = new CourseApplyService();
 	private CourseApplyHistoryService courseApplyHistoryService = new CourseApplyHistoryService();
+	private WebConfigService webConfigService = new WebConfigService();
 
 	public Integer count(JSONObject jsonObject) {
 		//Course courseMap = jsonObject.toJavaObject(Course.class);
@@ -140,6 +143,24 @@ public class CourseService {
 	}
 
 	public void apply(JSONObject jsonObject) {
+		WebConfig webConfig = webConfigService.find();
+
+		if(webConfig == null) {
+			throw new RuntimeException("已经过期，停止申请!");
+		} else {
+			Date startDate = Utility.getDateTime(webConfig.getWeb_config_apply_start_time());
+			Date nowDate = new Date();
+			Date endDate = Utility.getDateTime(webConfig.getWeb_config_apply_end_time());
+
+			if(nowDate.before(startDate)) {
+				throw new RuntimeException(webConfig.getWeb_config_apply_start_time() + "正式开放申请!");
+			}
+
+			if(nowDate.after(endDate)) {
+				throw new RuntimeException("已经过期，停止申请!");
+			}
+		}
+
 		Course courseMap = jsonObject.toJavaObject(Course.class);
 
 		String request_user_id = jsonObject.getString(Const.KEY_REQUEST_USER_ID);

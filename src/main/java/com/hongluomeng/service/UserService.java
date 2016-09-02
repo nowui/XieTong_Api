@@ -26,6 +26,10 @@ public class UserService {
 		return userDao.countByUser_idAndUser_account("", userMap.getUser_account());
 	}
 
+	public Integer countByUser_idAndUser_account(String user_id, String user_account) {
+		return userDao.countByUser_idAndUser_account(user_id, user_account);
+	}
+
 	public Integer countByUser_phone(String user_phone) {
 		return userDao.countByUser_idAndUser_phone("", user_phone);
 	}

@@ -68,4 +68,12 @@ public class GradeController extends BaseController {
         renderJson(Utility.setResponse(CodeEnum.CODE_200, "", null));
 	}
 
+	@Before(GradeValidator.class)
+	@ActionKey(Const.URL_GRADE_LIST_2)
+	public void list2() {
+		List<Grade> gradeList = gradeService.listAll();
+
+        renderJson(Utility.setResponse(CodeEnum.CODE_200, "", gradeList));
+    }
+
 }

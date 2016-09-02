@@ -104,7 +104,7 @@ public class GlobalActionInterceptor implements Interceptor {
 			}
 
 			if (isAuthorization) {
-				if (url.equals(Const.URL_UPLOAD_IMAGE) || url.equals(Const.URL_STUDENT_EXPORT)) {
+				if (url.equals(Const.URL_UPLOAD_IMAGE) || url.equals(Const.URL_STUDENT_EXPORT) || url.equals(Const.URL_STUDENT_UPLOAD)) {
 					request = "{}";
 				} else {
 					request = HttpKit.readData(controller.getRequest());

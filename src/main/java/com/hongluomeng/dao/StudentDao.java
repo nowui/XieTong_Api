@@ -18,6 +18,42 @@ public class StudentDao {
 
 		Boolean isExit = false;
 
+		if (! Utility.isNullOrEmpty(student.getGrade_id())) {
+			if(isExit) {
+				sql.append("AND ");
+			} else {
+				sql.append("WHERE ");
+			}
+			sql.append(Student.KEY_GRADE_ID + " = ? ");
+			parameterList.add(student.getGrade_id());
+
+			isExit = true;
+		}
+
+		if (! Utility.isNullOrEmpty(student.getStudent_name())) {
+			if(isExit) {
+				sql.append("AND ");
+			} else {
+				sql.append("WHERE ");
+			}
+			sql.append(Student.KEY_STUDENT_NAME + " = ? ");
+			parameterList.add(student.getStudent_name());
+
+			isExit = true;
+		}
+
+		if (! Utility.isNullOrEmpty(student.getStudent_name())) {
+			if(isExit) {
+				sql.append("AND ");
+			} else {
+				sql.append("WHERE ");
+			}
+			sql.append(Student.KEY_STUDENT_NAME + " LIKE ? ");
+			parameterList.add("%" + student.getStudent_name() + "%");
+
+			isExit = true;
+		}
+
 		if(isExit) {
 			sql.append("AND ");
 		} else {
@@ -29,8 +65,10 @@ public class StudentDao {
 		return count.intValue();
 	}
 
-	public Integer count() {
+	public Integer count(String grade_id, String student_name) {
 		Student student = new Student();
+		student.setGrade_id(grade_id);
+		student.setStudent_name(student_name);
 
 		return count(student);
 	}
@@ -43,6 +81,30 @@ public class StudentDao {
 		sql.append("LEFT JOIN " + Grade.KEY_GRADE + " ON " + Student.KEY_STUDENT + "." + Student.KEY_GRADE_ID + " = " + Grade.KEY_GRADE + "." + Grade.KEY_GRADE_ID + " ");
 
 		Boolean isExit = false;
+
+		if (! Utility.isNullOrEmpty(student.getGrade_id())) {
+			if(isExit) {
+				sql.append("AND ");
+			} else {
+				sql.append("WHERE ");
+			}
+			sql.append(Student.KEY_STUDENT + "." + Student.KEY_GRADE_ID + " = ? ");
+			parameterList.add(student.getGrade_id());
+
+			isExit = true;
+		}
+
+		if (! Utility.isNullOrEmpty(student.getStudent_name())) {
+			if(isExit) {
+				sql.append("AND ");
+			} else {
+				sql.append("WHERE ");
+			}
+			sql.append(Student.KEY_STUDENT + "." + Student.KEY_STUDENT_NAME + " LIKE ? ");
+			parameterList.add("%" + student.getStudent_name() + "%");
+
+			isExit = true;
+		}
 
 		if(isExit) {
 			sql.append("AND ");
@@ -63,8 +125,10 @@ public class StudentDao {
 		return studentList;
 	}
 
-	public List<Student> list(Integer m, Integer n) {
+	public List<Student> list(String grade_id, String student_name, Integer m, Integer n) {
 		Student student = new Student();
+		student.setGrade_id(grade_id);
+		student.setStudent_name(student_name);
 
 		return list(student, m, n);
 	}

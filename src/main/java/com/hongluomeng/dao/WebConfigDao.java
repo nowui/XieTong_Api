@@ -10,7 +10,7 @@ import com.hongluomeng.model.WebConfig;
 
 public class WebConfigDao {
 
-	private Integer count(WebConfig memberLevel) {
+	private Integer count(WebConfig webConfig) {
 		List<Object> parameterList = new ArrayList<Object>();
 
 		StringBuffer sql = new StringBuffer("SELECT COUNT(*) FROM " + WebConfig.KEY_WEB_CONFIG + " ");
@@ -29,12 +29,12 @@ public class WebConfigDao {
 	}
 
 	public Integer count() {
-		WebConfig memberLevel = new WebConfig();
+		WebConfig webConfig = new WebConfig();
 
-		return count(memberLevel);
+		return count(webConfig);
 	}
 
-	private List<WebConfig> list(WebConfig memberLevel, Integer m, Integer n) {
+	private List<WebConfig> list(WebConfig webConfig, Integer m, Integer n) {
 		List<Object> parameterList = new ArrayList<Object>();
 
 		StringBuffer sql = new StringBuffer("SELECT * FROM " + WebConfig.KEY_WEB_CONFIG + " ");
@@ -56,31 +56,31 @@ public class WebConfigDao {
 			parameterList.add(n);
 		}
 
-		List<WebConfig> memberLevelList = memberLevel.find(sql.toString(), parameterList.toArray());
-		return memberLevelList;
+		List<WebConfig> webConfigList = webConfig.find(sql.toString(), parameterList.toArray());
+		return webConfigList;
 	}
 
 	public List<WebConfig> list(Integer m, Integer n) {
-		WebConfig memberLevel = new WebConfig();
+		WebConfig webConfig = new WebConfig();
 
-		return list(memberLevel, m, n);
+		return list(webConfig, m, n);
 	}
 
-	private WebConfig find(WebConfig memberLevel) {
+	private WebConfig find(WebConfig webConfig) {
 		List<Object> parameterList = new ArrayList<Object>();
 
 		StringBuffer sql = new StringBuffer("SELECT * FROM " + WebConfig.KEY_WEB_CONFIG + " ");
 
 		Boolean isExit = false;
 
-		if (! Utility.isNullOrEmpty(memberLevel.getWeb_config_id())) {
+		if (! Utility.isNullOrEmpty(webConfig.getWeb_config_id())) {
 			if(isExit) {
 				sql.append(" AND ");
 			} else {
 				sql.append(" WHERE ");
 			}
 			sql.append(WebConfig.KEY_WEB_CONFIG_ID + " = ? ");
-			parameterList.add(memberLevel.getWeb_config_id());
+			parameterList.add(webConfig.getWeb_config_id());
 
 			isExit = true;
 		}
@@ -96,49 +96,49 @@ public class WebConfigDao {
 			return null;
 		}
 
-		List<WebConfig> memberLevelList = memberLevel.find(sql.toString(), parameterList.toArray());
-		if(memberLevelList.size() == 0) {
+		List<WebConfig> webConfigList = webConfig.find(sql.toString(), parameterList.toArray());
+		if(webConfigList.size() == 0) {
 			return null;
 		} else {
-			return memberLevelList.get(0);
+			return webConfigList.get(0);
 		}
 	}
 
-	public WebConfig findByWeb_config_id(String memberLevel_id) {
-		WebConfig memberLevel = new WebConfig();
-		memberLevel.setWeb_config_id(memberLevel_id);
+	public WebConfig findByWeb_config_id(String webConfig_id) {
+		WebConfig webConfig = new WebConfig();
+		webConfig.setWeb_config_id(webConfig_id);
 
-		return find(memberLevel);
+		return find(webConfig);
 	}
 
-	public void save(WebConfig memberLevel, String request_user_id) {
-		memberLevel.setWeb_config_id(Utility.getUUID());
-		memberLevel.setWeb_config_create_user_id(request_user_id);
-		memberLevel.setWeb_config_create_time(new Date());
-		memberLevel.setWeb_config_update_user_id(request_user_id);
-		memberLevel.setWeb_config_update_time(new Date());
-		memberLevel.setWeb_config_status(true);
+	public void save(WebConfig webConfig, String request_user_id) {
+		webConfig.setWeb_config_id(Utility.getUUID());
+		webConfig.setWeb_config_create_user_id(request_user_id);
+		webConfig.setWeb_config_create_time(new Date());
+		webConfig.setWeb_config_update_user_id(request_user_id);
+		webConfig.setWeb_config_update_time(new Date());
+		webConfig.setWeb_config_status(true);
 
-		memberLevel.save();
+		webConfig.save();
 	}
 
-	public void update(WebConfig memberLevel, String request_user_id) {
-		memberLevel.remove(WebConfig.KEY_WEB_CONFIG_CREATE_USER_ID);
-		memberLevel.remove(WebConfig.KEY_WEB_CONFIG_CREATE_TIME);
-		memberLevel.setWeb_config_update_user_id(request_user_id);
-		memberLevel.setWeb_config_update_time(new Date());
+	public void update(WebConfig webConfig, String request_user_id) {
+		webConfig.remove(WebConfig.KEY_WEB_CONFIG_CREATE_USER_ID);
+		webConfig.remove(WebConfig.KEY_WEB_CONFIG_CREATE_TIME);
+		webConfig.setWeb_config_update_user_id(request_user_id);
+		webConfig.setWeb_config_update_time(new Date());
 
-		memberLevel.update();
+		webConfig.update();
 	}
 
-	public void delete(String memberLevel_id, String request_user_id) {
-		WebConfig memberLevel = new WebConfig();
-		memberLevel.setWeb_config_id(memberLevel_id);
-		memberLevel.setWeb_config_update_user_id(request_user_id);
-		memberLevel.setWeb_config_update_time(new Date());
-		memberLevel.setWeb_config_status(false);
+	public void delete(String webConfig_id, String request_user_id) {
+		WebConfig webConfig = new WebConfig();
+		webConfig.setWeb_config_id(webConfig_id);
+		webConfig.setWeb_config_update_user_id(request_user_id);
+		webConfig.setWeb_config_update_time(new Date());
+		webConfig.setWeb_config_status(false);
 
-		memberLevel.update();
+		webConfig.update();
 	}
 
 }

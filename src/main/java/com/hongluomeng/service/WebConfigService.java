@@ -11,6 +11,7 @@ import com.hongluomeng.model.WebConfig;
 public class WebConfigService {
 
 	private WebConfigDao webConfigDao = new WebConfigDao();
+	private CacheService cacheService = new CacheService();
 
 	public Integer count(JSONObject jsonObject) {
 		//Web_config member_levelMap = jsonObject.toJavaObject(Web_config.class);
@@ -34,6 +35,22 @@ public class WebConfigService {
 		WebConfig member_level = webConfigDao.findByWeb_config_id(member_levelMap.getWeb_config_id());
 
 		return member_level;
+	}
+
+	public WebConfig find() {
+		WebConfig webConfig = cacheService.getWebConfig();
+
+		if(webConfig == null) {
+			List<WebConfig> webConfigList = webConfigDao.list(0, 0);
+
+			if(webConfigList.size() > 0) {
+				webConfig = webConfigList.get(0);
+
+				cacheService.setWebConfig(webConfig);
+			}
+		}
+
+		return webConfig;
 	}
 
 	public void save(JSONObject jsonObject) {

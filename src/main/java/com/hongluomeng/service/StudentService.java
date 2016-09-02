@@ -1,13 +1,26 @@
 package com.hongluomeng.service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hongluomeng.common.Const;
+import com.hongluomeng.common.MyPoiRender;
 import com.hongluomeng.common.Utility;
 import com.hongluomeng.dao.StudentDao;
 import com.hongluomeng.model.Grade;
@@ -15,6 +28,7 @@ import com.hongluomeng.model.Student;
 import com.hongluomeng.model.User;
 import com.hongluomeng.model.UserRole;
 import com.hongluomeng.type.UserEnum;
+import com.jfinal.upload.UploadFile;
 
 public class StudentService {
 
@@ -25,15 +39,15 @@ public class StudentService {
 	private AuthorizationService authorizationService = new AuthorizationService();
 
 	public Integer count(JSONObject jsonObject) {
-		//Student studentMap = jsonObject.toJavaObject(Student.class);
+		Student studentMap = jsonObject.toJavaObject(Student.class);
 
-		return studentDao.count();
+		return studentDao.count(studentMap.getGrade_id(), studentMap.getStudent_name());
 	}
 
 	public List<Student> list(JSONObject jsonObject) {
-		//Student studentMap = jsonObject.toJavaObject(Student.class);
+		Student studentMap = jsonObject.toJavaObject(Student.class);
 
-		return studentDao.list(Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
+		return studentDao.list(studentMap.getGrade_id(), studentMap.getStudent_name(), Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
 	}
 
 	public Student find(JSONObject jsonObject) {
@@ -68,13 +82,31 @@ public class StudentService {
 
 		String request_user_id = jsonObject.getString(Const.KEY_REQUEST_USER_ID);
 
-		String user_id = userService.saveByAccount(userMap.getUser_account(), userMap.getUser_password(), UserEnum.STUDENT.getKey(), request_user_id);
+		/*String user_id = userService.saveByAccount(userMap.getUser_account(), userMap.getUser_password(), UserEnum.STUDENT.getKey(), request_user_id);
 
 		studentMap.setUser_id(user_id);
 
 		studentDao.save(studentMap, request_user_id);
 
-		userService.updateObject_idByUser_id(studentMap.getStudent_id(), user_id);
+		userService.updateObject_idByUser_id(studentMap.getStudent_id(), user_id);*/
+
+		save(studentMap.getGrade_id(), studentMap.getStudent_number(), studentMap.getStudent_name(), studentMap.getStudent_sex(), userMap.getUser_account(), userMap.getUser_password(), request_user_id);
+	}
+
+	private void save(String grade_id, String student_number, String student_name, String student_sex, String user_account, String user_password, String request_user_id) {
+		Student student = new Student();
+		student.setGrade_id(grade_id);
+		student.setStudent_number(student_number);
+		student.setStudent_name(student_name);
+		student.setStudent_sex(student_sex);
+
+		String user_id = userService.saveByAccount(user_account, user_password, UserEnum.STUDENT.getKey(), request_user_id);
+
+		student.setUser_id(user_id);
+
+		studentDao.save(student, request_user_id);
+
+		userService.updateObject_idByUser_id(student.getStudent_id(), user_id);
 	}
 
 	public void update(JSONObject jsonObject) {
@@ -99,6 +131,20 @@ public class StudentService {
 		studentDao.delete(studentMap.getStudent_id(), request_user_id);
 
 		userService.deleteByObject_id(studentMap.getStudent_id(), request_user_id);
+	}
+
+	public void delete2(JSONObject jsonObject) {
+		JSONArray jsonArray = jsonObject.getJSONArray(Student.KEY_STUDENT_ID);
+
+		String request_user_id = jsonObject.getString(Const.KEY_REQUEST_USER_ID);
+
+		for(int i = 0; i < jsonArray.size(); i++) {
+			String student_id = jsonArray.getString(i);
+
+			studentDao.delete(student_id, request_user_id);
+
+			userService.deleteByObject_id(student_id, request_user_id);
+		}
 	}
 
 	public List<Map<String, Object>> listRole(JSONObject jsonObject) {
@@ -146,6 +192,106 @@ public class StudentService {
 			resultMap.put(Student.KEY_STUDENT_NAME, student.getStudent_name());
 
 			return resultMap;
+		}
+	}
+
+	public MyPoiRender export() {
+		HSSFWorkbook wb = new HSSFWorkbook();
+
+		HSSFSheet sheet = wb.createSheet("学生信息");
+		HSSFRow row = sheet.createRow((int) 0);
+		HSSFCellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+		HSSFCell cell = row.createCell(0);
+        cell.setCellValue("班别");
+        cell.setCellStyle(style);
+        cell = row.createCell(1);
+        cell.setCellValue("学号");
+        cell.setCellStyle(style);
+        cell = row.createCell(2);
+        cell.setCellValue("姓名");
+        cell.setCellStyle(style);
+        cell = row.createCell(3);
+        cell.setCellValue("性别");
+        cell.setCellStyle(style);
+
+        MyPoiRender myPoiRender = new MyPoiRender(wb, "学生信息");
+
+        return myPoiRender;
+	}
+
+	public void upload(UploadFile uploadFile, String request_user_id) {
+		String suffix = uploadFile.getFileName().substring(uploadFile.getFileName().lastIndexOf(".") + 1);
+
+		if (!".xls.xlsx".contains(suffix)) {
+			uploadFile.getFile().delete();
+
+			throw new RuntimeException("上传文件格式不正确!");
+		} else {
+			try {
+				InputStream is = new FileInputStream(uploadFile.getFile());
+				POIFSFileSystem fs = new POIFSFileSystem(is);
+				@SuppressWarnings("resource")
+				HSSFWorkbook wb = new HSSFWorkbook(fs);
+				HSSFSheet sheet = wb.getSheetAt(0);
+				int trLength = sheet.getLastRowNum();
+
+				List<Grade> gradeList = gradeService.listAll();
+
+				for(int i = 1; i < trLength; i++) {
+					HSSFRow row = sheet.getRow(i);
+
+					HSSFCell gradeCell = row.getCell(0);
+					gradeCell.setCellType(Cell.CELL_TYPE_STRING);
+
+					HSSFCell numberCell = row.getCell(1);
+					numberCell.setCellType(Cell.CELL_TYPE_STRING);
+
+					HSSFCell nameCell = row.getCell(2);
+					nameCell.setCellType(Cell.CELL_TYPE_STRING);
+
+					HSSFCell sexCell = row.getCell(3);
+					sexCell.setCellType(Cell.CELL_TYPE_STRING);
+
+					String student_grade = gradeCell.getStringCellValue();
+					String student_number = gradeCell.getStringCellValue() + (numberCell.getStringCellValue().length() == 1 ? "0" : "") + numberCell.getStringCellValue();
+					String student_name = nameCell.getStringCellValue();
+					String student_sex = sexCell.getStringCellValue();
+
+					System.out.println(student_number + "-" + student_name + "-" + student_sex);
+
+					if(Utility.isNullOrEmpty(student_number) || Utility.isNullOrEmpty(student_name) || Utility.isNullOrEmpty(student_sex)) {
+
+					} else {
+						String grade_id = "";
+
+						for(Grade grade : gradeList) {
+							if(grade.getGrade_name().equals(student_grade)) {
+								grade_id = grade.getGrade_id();
+
+								break;
+							}
+						}
+
+						if(grade_id != "") {
+							Integer count = userService.countByUser_idAndUser_account("", student_number);
+
+							if(count == 0) {
+								save(grade_id, student_number, student_name, student_sex, student_number, student_number, request_user_id);
+							}
+						}
+					}
+				}
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			uploadFile.getFile().delete();
 		}
 	}
 

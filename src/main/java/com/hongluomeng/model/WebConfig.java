@@ -2,7 +2,6 @@ package com.hongluomeng.model;
 
 import java.util.Date;
 
-import com.hongluomeng.common.Utility;
 import com.jfinal.plugin.activerecord.Model;
 
 public class WebConfig extends Model<WebConfig> {

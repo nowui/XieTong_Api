@@ -32,6 +32,7 @@ public class Const {
 	public static final String KEY_URL = "url";
 
 	public static final String CACHE_OPERATION = "cache_operation";
+	public static final String CACHE_WEB_CONFIG = "cache_web_config";
 
 	public static final int BATCH_SIZE = 100;
 
@@ -144,11 +145,14 @@ public class Const {
 	public static final String URL_STUDENT_DELETE = "/student/delete";
 	public static final String URL_STUDENT_LOGIN = "/student/login";
 	public static final String URL_STUDENT_EXPORT = "/student/export";
+	public static final String URL_STUDENT_UPLOAD = "/student/upload";
+	public static final String URL_STUDENT_DELETE_2 = "/student/delete2";
 	public static final String URL_GRADE_LIST = "/grade/list";
 	public static final String URL_GRADE_FIND = "/grade/find";
 	public static final String URL_GRADE_SAVE = "/grade/save";
 	public static final String URL_GRADE_UPDATE = "/grade/update";
 	public static final String URL_GRADE_DELETE = "/grade/delete";
+	public static final String URL_GRADE_LIST_2 = "/grade/list2";
 	public static final String URL_COURSE_LIST = "/course/list";
 	public static final String URL_COURSE_LIST_2 = "/course/list2";
 	public static final String URL_COURSE_FIND = "/course/find";

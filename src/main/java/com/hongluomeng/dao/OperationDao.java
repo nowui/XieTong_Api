@@ -120,8 +120,6 @@ public class OperationDao {
 		sql.append("AND " + Operation.KEY_OPERATION_STATUS + " = 1 ");
 		parameterList.add(user_id);
 
-		System.out.println(sql.toString());
-
 		Operation operation = new Operation();
 
 		List<Operation> operationList = operation.find(sql.toString(), parameterList.toArray());

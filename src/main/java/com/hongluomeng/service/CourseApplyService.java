@@ -29,8 +29,16 @@ public class CourseApplyService {
 		return courseApplyDao.listByUser_id(user_id);
 	}
 
-	public List<CourseApply> listByCourse_id(String course_id) {
-		return courseApplyDao.listByCourse_id(course_id);
+	public List<CourseApply> listMyCourseApply(String user_id) {
+		return courseApplyDao.listMyCourseApply(user_id);
+	}
+
+	public List<CourseApply> listOrderByCourse_id() {
+		return courseApplyDao.listOrderByCourse_id();
+	}
+
+	public List<CourseApply> listOrderByGrade_idAndStudent_id() {
+		return courseApplyDao.listOrderByGrade_idAndStudent_id();
 	}
 
 	public void save(String course_id, String request_user_id) {

@@ -8,6 +8,7 @@ import com.jfinal.core.ActionKey;
 import com.hongluomeng.common.Const;
 import com.hongluomeng.common.Utility;
 import com.hongluomeng.model.Course;
+import com.hongluomeng.model.CourseApply;
 import com.hongluomeng.model.CourseApplyHistory;
 import com.hongluomeng.service.CourseService;
 import com.hongluomeng.type.CodeEnum;
@@ -113,6 +114,16 @@ public class CourseController extends BaseController {
 	@ActionKey(Const.URL_COURSE_EXPORT)
 	public void export() {
         render(courseService.export());
+	}
+
+	@Before(CourseValidator.class)
+	@ActionKey(Const.URL_COURSE_MY)
+	public void my() {
+		JSONObject jsonObject = getAttr(Const.KEY_REQUEST);
+
+		List<CourseApply> courseApplyList = courseService.my(jsonObject);
+
+        renderJson(Utility.setResponse(CodeEnum.CODE_200, "", courseApplyList));
 	}
 
 }

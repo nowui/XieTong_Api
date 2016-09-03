@@ -2,6 +2,7 @@ package com.hongluomeng.model;
 
 import java.util.Date;
 
+import com.alibaba.fastjson.JSONArray;
 import com.jfinal.plugin.activerecord.Model;
 
 public class CourseApply extends Model<CourseApply> {
@@ -15,6 +16,10 @@ public class CourseApply extends Model<CourseApply> {
 	public static final String KEY_GRADE_NAME = "grade_name";
 	public static final String KEY_STUDENT_NUMBER = "student_number";
 	public static final String KEY_STUDENT_SEX = "student_sex";
+	public static final String KEY_COURSE_NAME = "course_name";
+	public static final String KEY_COURSE_CLASS = "course_class";
+	public static final String KEY_COURSE_TEACHER = "course_teacher";
+	public static final String KEY_COURSE_ADDRESS = "course_address";
 	public static final String KEY_COURSE_APPLY_CREATE_USER_ID = "course_apply_create_user_id";
 	public static final String KEY_COURSE_APPLY_CREATE_TIME = "course_apply_create_time";
 	public static final String KEY_COURSE_APPLY_UPDATE_USER_ID = "course_apply_update_user_id";
@@ -51,6 +56,22 @@ public class CourseApply extends Model<CourseApply> {
 
 	public String getStudent_sex() {
 		return getStr(KEY_STUDENT_SEX);
+	}
+
+	public String getCourse_name() {
+		return getStr(KEY_COURSE_NAME);
+	}
+
+	public String getCourse_class() {
+		return getStr(KEY_COURSE_CLASS);
+	}
+
+	public JSONArray getCourse_teacher() {
+		return JSONArray.parseArray(getStr(KEY_COURSE_TEACHER));
+	}
+
+	public String getCourse_address() {
+		return getStr(KEY_COURSE_ADDRESS);
 	}
 
 	public void setCourseApply_create_user_id(String courseApply_create_user_id) {

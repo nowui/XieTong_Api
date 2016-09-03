@@ -54,6 +54,10 @@ public class CacheService {
 		ehcacheObject.put(Const.CACHE_WEB_CONFIG, webConfig);
 	}
 
+	public void removeWebConfig() {
+		ehcacheObject.remove(Const.CACHE_WEB_CONFIG);
+	}
+
 	private Set<String> getMapByKey(String key) {
 		Set<String> set;
 

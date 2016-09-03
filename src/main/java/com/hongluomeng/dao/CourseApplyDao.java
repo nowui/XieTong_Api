@@ -168,20 +168,45 @@ public class CourseApplyDao {
 		return list(courseApply, 0, 0);
 	}
 
-	public List<CourseApply> listByCourse_id(String course_id) {
+	public List<CourseApply> listMyCourseApply(String user_id) {
 		List<Object> parameterList = new ArrayList<Object>();
 
-		StringBuffer sql = new StringBuffer("SELECT " + CourseApply.KEY_COURSE_APPLY + ".*, " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_NAME + ", " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_NUMBER + ", " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_SEX + ", " + Grade.KEY_GRADE + "." + Grade.KEY_GRADE_NAME + " FROM " + CourseApply.KEY_COURSE_APPLY + " ");
+		StringBuffer sql = new StringBuffer("SELECT " + CourseApply.KEY_COURSE_APPLY + ".*, " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_NAME + ", " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_NUMBER + ", " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_SEX + ", " + Grade.KEY_GRADE + "." + Grade.KEY_GRADE_NAME + ", " + Course.KEY_COURSE + "." + Course.KEY_COURSE_NAME + ", " + Course.KEY_COURSE + "." + Course.KEY_COURSE_CLASS + ", " + Course.KEY_COURSE + "." + Course.KEY_COURSE_TEACHER + ", " + Course.KEY_COURSE + "." + Course.KEY_COURSE_ADDRESS + " FROM " + CourseApply.KEY_COURSE_APPLY + " ");
 		sql.append("LEFT JOIN " + Student.KEY_STUDENT + " ON " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_USER_ID + " = " + Student.KEY_STUDENT + "." + Student.KEY_USER_ID + " ");
 		sql.append("LEFT JOIN " + Grade.KEY_GRADE + " ON " + Student.KEY_STUDENT + "." + Student.KEY_GRADE_ID + " = " + Grade.KEY_GRADE + "." + Grade.KEY_GRADE_ID + " ");
-
+		sql.append("LEFT JOIN " + Course.KEY_COURSE + " ON " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_COURSE_ID + " = " + Course.KEY_COURSE + "." + Course.KEY_COURSE_ID + " ");
 		sql.append("WHERE " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_COURSE_APPLY_STATUS + " = 1 ");
-		sql.append("AND " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_COURSE_ID + " = ? ");
+		sql.append("AND " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_USER_ID + " = ? ");
+		sql.append("ORDER BY " + Course.KEY_COURSE_CLASS + " ASC ");
 
-		parameterList.add(course_id);
+		parameterList.add(user_id);
 
 		List<CourseApply> courseApplyList = new CourseApply().find(sql.toString(), parameterList.toArray());
 		return courseApplyList;
+	}
+
+	private List<CourseApply> listOrderByObject_id(String object_id) {
+		List<Object> parameterList = new ArrayList<Object>();
+
+		StringBuffer sql = new StringBuffer("SELECT " + CourseApply.KEY_COURSE_APPLY + ".*, " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_NAME + ", " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_NUMBER + ", " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_SEX + ", " + Grade.KEY_GRADE + "." + Grade.KEY_GRADE_NAME + ", " + Course.KEY_COURSE + "." + Course.KEY_COURSE_NAME + ", " + Course.KEY_COURSE + "." + Course.KEY_COURSE_CLASS + ", " + Course.KEY_COURSE + "." + Course.KEY_COURSE_TEACHER + ", " + Course.KEY_COURSE + "." + Course.KEY_COURSE_ADDRESS + " FROM " + CourseApply.KEY_COURSE_APPLY + " ");
+		sql.append("LEFT JOIN " + Student.KEY_STUDENT + " ON " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_USER_ID + " = " + Student.KEY_STUDENT + "." + Student.KEY_USER_ID + " ");
+		sql.append("LEFT JOIN " + Grade.KEY_GRADE + " ON " + Student.KEY_STUDENT + "." + Student.KEY_GRADE_ID + " = " + Grade.KEY_GRADE + "." + Grade.KEY_GRADE_ID + " ");
+		sql.append("LEFT JOIN " + Course.KEY_COURSE + " ON " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_COURSE_ID + " = " + Course.KEY_COURSE + "." + Course.KEY_COURSE_ID + " ");
+		sql.append("WHERE " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_COURSE_APPLY_STATUS + " = 1 ");
+		sql.append("ORDER BY " + object_id + " ");
+
+		System.out.println(sql.toString());
+
+		List<CourseApply> courseApplyList = new CourseApply().find(sql.toString(), parameterList.toArray());
+		return courseApplyList;
+	}
+
+	public List<CourseApply> listOrderByCourse_id() {
+		return listOrderByObject_id(Course.KEY_COURSE + "." + Course.KEY_COURSE_ID + ", " + Course.KEY_COURSE_CLASS + ", " + Student.KEY_STUDENT_NUMBER + " ASC");
+	}
+
+	public List<CourseApply> listOrderByGrade_idAndStudent_id() {
+		return listOrderByObject_id(Grade.KEY_GRADE + "." + Grade.KEY_GRADE_NAME + " ASC, " + Student.KEY_STUDENT + "." + Student.KEY_STUDENT_ID + " DESC, " + Course.KEY_COURSE_CLASS + " ASC");
 	}
 
 	public void save(String course_id, String request_user_id) {

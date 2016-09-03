@@ -59,8 +59,6 @@ public class CourseService {
 		for(Course course : courseList) {
 			course.setIsApply(false);
 
-			System.out.println(course.getCourse_apply_count());
-
 			for(CourseApply courseApply : courseApplyList) {
 				if(course.getCourse_id().equals(courseApply.getCourse_id())) {
 					course.setIsApply(true);
@@ -241,119 +239,261 @@ public class CourseService {
 	}
 
 	public MyPoiRender export() {
-		List<Course> courseList = courseDao.list(0, 0);
+		List<CourseApply> courseApplyListOrderByCourse_id = courseApplyService.listOrderByCourse_id();
+		List<CourseApply> courseApplyListOrderByGrade_idAndStudent_id = courseApplyService.listOrderByGrade_idAndStudent_id();
 
 		List<Teacher> teacherList = teacherService.ListAll();
 
 		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFCellStyle style = wb.createCellStyle();
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 
-		for(int i = 0; i < courseList.size(); i++) {
-			Course course = courseList.get(i);
+		HSSFSheet sheet = wb.createSheet("总-按科目");
 
-			HSSFSheet sheet = wb.createSheet(i + 1 + "、" + course.getCourse_name());
-			HSSFCellStyle style = wb.createCellStyle();
-			style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		HSSFRow row = sheet.createRow(0);
+		HSSFCell cell = row.createCell(0);
+        cell.setCellValue("姓名");
+        cell.setCellStyle(style);
+        cell = row.createCell(1);
+        cell.setCellValue("班级");
+        cell.setCellStyle(style);
+        cell = row.createCell(2);
+        cell.setCellValue("学号");
+        cell.setCellStyle(style);
+        cell = row.createCell(3);
+        cell.setCellValue("性别");
+        cell.setCellStyle(style);
+        cell = row.createCell(4);
+        cell.setCellValue("课程名称");
+        cell.setCellStyle(style);
+        cell = row.createCell(5);
+        cell.setCellValue("上课时间");
+        cell.setCellStyle(style);
+        cell = row.createCell(6);
+        cell.setCellValue("上课老师");
+        cell.setCellStyle(style);
+        cell = row.createCell(7);
+        cell.setCellValue("上课地点");
+        cell.setCellStyle(style);
 
-			HSSFRow row = sheet.createRow(0);
-			HSSFCell cell = row.createCell(0);
-	        cell.setCellValue("课程名称");
-	        cell.setCellStyle(style);
-	        cell = row.createCell(1);
-	        cell.setCellValue("上课时间");
-	        cell.setCellStyle(style);
-	        cell = row.createCell(2);
-	        cell.setCellValue("老师");
-	        cell.setCellStyle(style);
-	        cell = row.createCell(3);
-	        cell.setCellValue("上课地点");
-	        cell.setCellStyle(style);
+        for(int i = 0; i < courseApplyListOrderByCourse_id.size(); i++) {
+        	CourseApply courseApply = courseApplyListOrderByCourse_id.get(i);
 
-	        String course_class = course.getCourse_class();
-	        String course_class_name = "";
+        	String teacher_name = getTeacherName(courseApply.getCourse_teacher(), teacherList);
 
-	        if(course_class.equals("17")) {
-	        	course_class_name = "星期一第七节";
-	        } else if(course_class.equals("27")) {
-	        	course_class_name = "星期二第七节";
-	        } else if(course_class.equals("28")) {
-	        	course_class_name = "星期二第八节";
-	        } else if(course_class.equals("47")) {
-	        	course_class_name = "星期四第七节";
-	        } else if(course_class.equals("48")) {
-	        	course_class_name = "星期四第八节";
-	        } else if(course_class.equals("56")) {
-	        	course_class_name = "星期五第六节";
-	        }
+        	String class_name = getClassName(courseApply.getCourse_class());
 
-	        String teacher_name = "";
-	        JSONArray teacherArray = course.getCourse_teacher();
-	        for(int j = 0; j < teacherList.size(); j++) {
-	        	Teacher teacher = teacherList.get(j);
+    		row = sheet.createRow(i + 1);
+    		cell = row.createCell(0);
+            cell.setCellValue(courseApply.getStudent_name());
+            cell.setCellStyle(style);
+            cell = row.createCell(1);
+            cell.setCellValue(courseApply.getGrade_name());
+            cell.setCellStyle(style);
+            cell = row.createCell(2);
+            cell.setCellValue(courseApply.getStudent_number());
+            cell.setCellStyle(style);
+            cell = row.createCell(3);
+            cell.setCellValue(courseApply.getStudent_sex());
+            cell.setCellStyle(style);
+            cell = row.createCell(4);
+            cell.setCellValue(courseApply.getCourse_name());
+            cell.setCellStyle(style);
+            cell = row.createCell(5);
+            cell.setCellValue(class_name);
+            cell.setCellStyle(style);
+            cell = row.createCell(6);
+            cell.setCellValue(teacher_name);
+            cell.setCellStyle(style);
+            cell = row.createCell(7);
+            cell.setCellValue(courseApply.getCourse_address());
+            cell.setCellStyle(style);
+        }
 
-	        	for(int k = 0; k < teacherArray.size(); k++) {
-	        		String teacher_id = teacherArray.getString(k);
+        sheet = wb.createSheet("总-按班级");
 
-	        		if(teacher_id.equals(teacher.getTeacher_id())) {
-	        			teacher_name += "," + teacher.getTeacher_name();
-	        		}
-	        	}
-	        }
-	        if(teacher_name != "") {
-	        	teacher_name = teacher_name.substring(1);
-	        }
+		row = sheet.createRow(0);
+		cell = row.createCell(0);
+        cell.setCellValue("姓名");
+        cell.setCellStyle(style);
+        cell = row.createCell(1);
+        cell.setCellValue("班级");
+        cell.setCellStyle(style);
+        cell = row.createCell(2);
+        cell.setCellValue("学号");
+        cell.setCellStyle(style);
+        cell = row.createCell(3);
+        cell.setCellValue("性别");
+        cell.setCellStyle(style);
+        cell = row.createCell(4);
+        cell.setCellValue("课程名称");
+        cell.setCellStyle(style);
+        cell = row.createCell(5);
+        cell.setCellValue("上课时间");
+        cell.setCellStyle(style);
+        cell = row.createCell(6);
+        cell.setCellValue("上课老师");
+        cell.setCellStyle(style);
+        cell = row.createCell(7);
+        cell.setCellValue("上课地点");
+        cell.setCellStyle(style);
 
-			row = sheet.createRow(1);
-			cell = row.createCell(0);
-	        cell.setCellValue(course.getCourse_name());
-	        cell.setCellStyle(style);
-	        cell = row.createCell(1);
-	        cell.setCellValue(course_class_name);
-	        cell.setCellStyle(style);
-	        cell = row.createCell(2);
-	        cell.setCellValue(teacher_name);
-	        cell.setCellStyle(style);
-	        cell = row.createCell(3);
-	        cell.setCellValue(course.getCourse_address());
-	        cell.setCellStyle(style);
+        for(int i = 0; i < courseApplyListOrderByGrade_idAndStudent_id.size(); i++) {
+        	CourseApply courseApply = courseApplyListOrderByGrade_idAndStudent_id.get(i);
 
-			row = sheet.createRow(5);
-			cell = row.createCell(0);
-	        cell.setCellValue("姓名");
-	        cell.setCellStyle(style);
-	        cell = row.createCell(1);
-	        cell.setCellValue("班级");
-	        cell.setCellStyle(style);
-	        cell = row.createCell(2);
-	        cell.setCellValue("学号");
-	        cell.setCellStyle(style);
-	        cell = row.createCell(3);
-	        cell.setCellValue("性别");
-	        cell.setCellStyle(style);
+        	String teacher_name = getTeacherName(courseApply.getCourse_teacher(), teacherList);
 
-	        List<CourseApply> courseApplyList = courseApplyService.listByCourse_id(course.getCourse_id());
+        	String class_name = getClassName(courseApply.getCourse_class());
 
-	        for(int j = 0; j < courseApplyList.size(); j++) {
-	        	CourseApply courseApply = courseApplyList.get(j);
+    		row = sheet.createRow(i + 1);
+    		cell = row.createCell(0);
+            cell.setCellValue(courseApply.getStudent_name());
+            cell.setCellStyle(style);
+            cell = row.createCell(1);
+            cell.setCellValue(courseApply.getGrade_name());
+            cell.setCellStyle(style);
+            cell = row.createCell(2);
+            cell.setCellValue(courseApply.getStudent_number());
+            cell.setCellStyle(style);
+            cell = row.createCell(3);
+            cell.setCellValue(courseApply.getStudent_sex());
+            cell.setCellStyle(style);
+            cell = row.createCell(4);
+            cell.setCellValue(courseApply.getCourse_name());
+            cell.setCellStyle(style);
+            cell = row.createCell(5);
+            cell.setCellValue(class_name);
+            cell.setCellStyle(style);
+            cell = row.createCell(6);
+            cell.setCellValue(teacher_name);
+            cell.setCellStyle(style);
+            cell = row.createCell(7);
+            cell.setCellValue(courseApply.getCourse_address());
+            cell.setCellStyle(style);
+        }
 
-    			row = sheet.createRow(i + 6);
-    			cell = row.createCell(0);
-    	        cell.setCellValue(courseApply.getStudent_name());
-    	        cell.setCellStyle(style);
-    	        cell = row.createCell(1);
-    	        cell.setCellValue(courseApply.getGrade_name());
-    	        cell.setCellStyle(style);
-    	        cell = row.createCell(2);
-    	        cell.setCellValue(courseApply.getStudent_number());
-    	        cell.setCellStyle(style);
-    	        cell = row.createCell(3);
-    	        cell.setCellValue(courseApply.getStudent_sex());
-    	        cell.setCellStyle(style);
-	        }
-		}
+        String course_id = "";
+        int index = 0;
+        for(int i = 0; i < courseApplyListOrderByCourse_id.size(); i++) {
+        	CourseApply courseApply = courseApplyListOrderByCourse_id.get(i);
+
+        	if(! course_id.equals(courseApply.getCourse_id())) {
+        		course_id = courseApply.getCourse_id();
+
+        		index = 0;
+
+        		sheet = wb.createSheet(i + 1 + "、" + courseApply.getCourse_name());
+
+        		row = sheet.createRow(0);
+        		cell = row.createCell(0);
+                cell.setCellValue("姓名");
+                cell.setCellStyle(style);
+                cell = row.createCell(1);
+                cell.setCellValue("班级");
+                cell.setCellStyle(style);
+                cell = row.createCell(2);
+                cell.setCellValue("学号");
+                cell.setCellStyle(style);
+                cell = row.createCell(3);
+                cell.setCellValue("性别");
+                cell.setCellStyle(style);
+                cell = row.createCell(4);
+                cell.setCellValue("课程名称");
+                cell.setCellStyle(style);
+                cell = row.createCell(5);
+                cell.setCellValue("上课时间");
+                cell.setCellStyle(style);
+                cell = row.createCell(6);
+                cell.setCellValue("上课老师");
+                cell.setCellStyle(style);
+                cell = row.createCell(7);
+                cell.setCellValue("上课地点");
+                cell.setCellStyle(style);
+        	}
+
+        	String teacher_name = getTeacherName(courseApply.getCourse_teacher(), teacherList);
+
+        	String class_name = getClassName(courseApply.getCourse_class());
+
+    		row = sheet.createRow(index + 1);
+    		cell = row.createCell(0);
+            cell.setCellValue(courseApply.getStudent_name());
+            cell.setCellStyle(style);
+            cell = row.createCell(1);
+            cell.setCellValue(courseApply.getGrade_name());
+            cell.setCellStyle(style);
+            cell = row.createCell(2);
+            cell.setCellValue(courseApply.getStudent_number());
+            cell.setCellStyle(style);
+            cell = row.createCell(3);
+            cell.setCellValue(courseApply.getStudent_sex());
+            cell.setCellStyle(style);
+            cell = row.createCell(4);
+            cell.setCellValue(courseApply.getCourse_name());
+            cell.setCellStyle(style);
+            cell = row.createCell(5);
+            cell.setCellValue(class_name);
+            cell.setCellStyle(style);
+            cell = row.createCell(6);
+            cell.setCellValue(teacher_name);
+            cell.setCellStyle(style);
+            cell = row.createCell(7);
+            cell.setCellValue(courseApply.getCourse_address());
+            cell.setCellStyle(style);
+
+            index++;
+        }
 
         MyPoiRender myPoiRender = new MyPoiRender(wb, "选课信息");
 
         return myPoiRender;
+	}
+
+	private String getTeacherName(JSONArray teacherArray, List<Teacher> teacherList) {
+		String teacher_name = "";
+
+        for(int j = 0; j < teacherList.size(); j++) {
+        	Teacher teacher = teacherList.get(j);
+
+        	for(int k = 0; k < teacherArray.size(); k++) {
+        		String teacher_id = teacherArray.getString(k);
+
+        		if(teacher_id.equals(teacher.getTeacher_id())) {
+        			teacher_name += "," + teacher.getTeacher_name();
+        		}
+        	}
+        }
+        if(teacher_name != "") {
+        	teacher_name = teacher_name.substring(1);
+        }
+
+        return teacher_name;
+	}
+
+	private String getClassName(String course_class) {
+		String class_name = "";
+
+        if(course_class.equals("17")) {
+        	class_name = "星期一第七节";
+        } else if(course_class.equals("27")) {
+        	class_name = "星期二第七节";
+        } else if(course_class.equals("28")) {
+        	class_name = "星期二第八节";
+        } else if(course_class.equals("47")) {
+        	class_name = "星期四第七节";
+        } else if(course_class.equals("48")) {
+        	class_name = "星期四第八节";
+        } else if(course_class.equals("56")) {
+        	class_name = "星期五第六节";
+        }
+
+        return class_name;
+	}
+
+	public List<CourseApply> my(JSONObject jsonObject) {
+		String request_user_id = jsonObject.getString(Const.KEY_REQUEST_USER_ID);
+
+		return courseApplyService.listMyCourseApply(request_user_id);
 	}
 
 }

@@ -67,6 +67,8 @@ public class WebConfigService {
 		String request_user_id = jsonObject.getString(Const.KEY_REQUEST_USER_ID);
 
 		webConfigDao.update(member_levelMap, request_user_id);
+
+		cacheService.removeWebConfig();
 	}
 
 	public void delete(JSONObject jsonObject) {

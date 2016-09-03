@@ -112,6 +112,9 @@ public class CourseValidator extends Validator {
 		} else if(actionKey.equals(Const.URL_COURSE_EXPORT)) {
 			isExit = true;
 
+		} else if(actionKey.equals(Const.URL_COURSE_MY)) {
+			isExit = true;
+
 		}
 
 		if (! isExit) {

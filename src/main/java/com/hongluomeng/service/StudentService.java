@@ -215,6 +215,9 @@ public class StudentService {
         cell = row.createCell(3);
         cell.setCellValue("性别");
         cell.setCellStyle(style);
+        cell = row.createCell(4);
+        cell.setCellValue("密码");
+        cell.setCellStyle(style);
 
         MyPoiRender myPoiRender = new MyPoiRender(wb, "学生信息");
 
@@ -254,12 +257,14 @@ public class StudentService {
 					HSSFCell sexCell = row.getCell(3);
 					sexCell.setCellType(Cell.CELL_TYPE_STRING);
 
+					HSSFCell passwordCell = row.getCell(4);
+					passwordCell.setCellType(Cell.CELL_TYPE_STRING);
+
 					String student_grade = gradeCell.getStringCellValue();
 					String student_number = gradeCell.getStringCellValue() + (numberCell.getStringCellValue().length() == 1 ? "0" : "") + numberCell.getStringCellValue();
 					String student_name = nameCell.getStringCellValue();
 					String student_sex = sexCell.getStringCellValue();
-
-					System.out.println(student_number + "-" + student_name + "-" + student_sex);
+					String user_password = passwordCell.getStringCellValue();
 
 					if(Utility.isNullOrEmpty(student_number) || Utility.isNullOrEmpty(student_name) || Utility.isNullOrEmpty(student_sex)) {
 
@@ -278,7 +283,7 @@ public class StudentService {
 							Integer count = userService.countByUser_idAndUser_account("", student_number);
 
 							if(count == 0) {
-								save(grade_id, student_number, student_name, student_sex, student_number, student_number, request_user_id);
+								save(grade_id, student_number, student_name, student_sex, student_number, user_password, request_user_id);
 							}
 						}
 					}

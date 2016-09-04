@@ -1,7 +1,5 @@
 package com.hongluomeng.service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,16 +21,16 @@ public class ProductService {
 	private CategoryAttributeService categoryAttributeService = new CategoryAttributeService();
 	private ProductAttributeService productAttributeService = new ProductAttributeService();
 
-	public Integer count(JSONObject jsonObject) {
+	public Map<String, Object> list(JSONObject jsonObject) {
 		//Product productMap = jsonObject.toJavaObject(Product.class);
 
-		return productDao.count();
-	}
+		Integer count = productDao.count();
 
-	public List<Product> list(JSONObject jsonObject) {
-		//Product productMap = jsonObject.toJavaObject(Product.class);
+		List<Product> productList = productDao.list(Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
 
-		return productDao.list(Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
+		Map<String, Object> resultMap = Utility.setResultMap(count, productList);
+
+		return resultMap;
 	}
 
 	public Product find(JSONObject jsonObject) {
@@ -45,10 +43,6 @@ public class ProductService {
 
 		if (Utility.isNullOrEmpty(productMap.getProduct_id())) {
 			product = new Product();
-			product.setProduct_price(BigDecimal.valueOf(0.00));
-			product.setProduct_stock(0);
-			product.setProduct_image("[]");
-			product.setCategoryAttributeList(new ArrayList<CategoryAttribute>());
 		} else {
 			product = productDao.findByProduct_id(productMap.getProduct_id());
 

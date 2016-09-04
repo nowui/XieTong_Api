@@ -1,6 +1,7 @@
 package com.hongluomeng.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Before;
@@ -21,11 +22,9 @@ public class GradeController extends BaseController {
 	public void list() {
 		JSONObject jsonObject = getAttr(Const.KEY_REQUEST);
 
-		List<Grade> gradeList = gradeService.list(jsonObject);
+		Map<String, Object> resultMap = gradeService.list(jsonObject);
 
-		Integer count = gradeService.count(jsonObject);
-
-        renderJson(Utility.setResponse(CodeEnum.CODE_200, "", count, gradeList));
+        renderJson(Utility.setResponse(CodeEnum.CODE_200, "", resultMap));
     }
 
 	@Before(GradeValidator.class)

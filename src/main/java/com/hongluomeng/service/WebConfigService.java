@@ -1,6 +1,7 @@
 package com.hongluomeng.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hongluomeng.common.Const;
@@ -13,16 +14,16 @@ public class WebConfigService {
 	private WebConfigDao webConfigDao = new WebConfigDao();
 	private CacheService cacheService = new CacheService();
 
-	public Integer count(JSONObject jsonObject) {
+	public Map<String, Object> list(JSONObject jsonObject) {
 		//Web_config member_levelMap = jsonObject.toJavaObject(Web_config.class);
 
-		return webConfigDao.count();
-	}
+		Integer count = webConfigDao.count();
 
-	public List<WebConfig> list(JSONObject jsonObject) {
-		//Web_config member_levelMap = jsonObject.toJavaObject(Web_config.class);
+		List<WebConfig> webConfigList = webConfigDao.list(Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
 
-		return webConfigDao.list(Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
+		Map<String, Object> resultMap = Utility.setResultMap(count, webConfigList);
+
+		return resultMap;
 	}
 
 	public List<WebConfig> listByUser_id(String user_id) {

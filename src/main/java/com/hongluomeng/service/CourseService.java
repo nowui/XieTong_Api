@@ -2,6 +2,7 @@ package com.hongluomeng.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -33,16 +34,16 @@ public class CourseService {
 	private CourseApplyHistoryService courseApplyHistoryService = new CourseApplyHistoryService();
 	private WebConfigService webConfigService = new WebConfigService();
 
-	public Integer count(JSONObject jsonObject) {
+	public Map<String, Object> list(JSONObject jsonObject) {
 		//Course courseMap = jsonObject.toJavaObject(Course.class);
 
-		return courseDao.count();
-	}
+		Integer count = courseDao.count();
 
-	public List<Course> list(JSONObject jsonObject) {
-		//Course courseMap = jsonObject.toJavaObject(Course.class);
+		List<Course> courseList = courseDao.list(Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
 
-		return courseDao.list(Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
+		Map<String, Object> resultMap = Utility.setResultMap(count, courseList);
+
+		return resultMap;
 	}
 
 	public List<Course> listForApply(JSONObject jsonObject) {

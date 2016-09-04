@@ -1,6 +1,5 @@
 package com.hongluomeng.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
@@ -22,11 +21,9 @@ public class TeacherController extends BaseController {
 	public void list() {
 		JSONObject jsonObject = getAttr(Const.KEY_REQUEST);
 
-		List<Teacher> teacherList = teacherService.list(jsonObject);
+		Map<String, Object> resultMap = teacherService.list(jsonObject);
 
-		Integer count = teacherService.count(jsonObject);
-
-        renderJson(Utility.setResponse(CodeEnum.CODE_200, "", count, teacherList));
+        renderJson(Utility.setResponse(CodeEnum.CODE_200, "", resultMap));
     }
 
 	@Before(TeacherValidator.class)

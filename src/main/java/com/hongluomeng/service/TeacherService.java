@@ -22,16 +22,16 @@ public class TeacherService {
 	private RoleService roleService = new RoleService();
 	private AuthorizationService authorizationService = new AuthorizationService();
 
-	public Integer count(JSONObject jsonObject) {
+	public Map<String, Object> list(JSONObject jsonObject) {
 		//Teacher teacherMap = jsonObject.toJavaObject(Teacher.class);
 
-		return teacherDao.count();
-	}
+		Integer count = teacherDao.count();
 
-	public List<Teacher> list(JSONObject jsonObject) {
-		//Teacher teacherMap = jsonObject.toJavaObject(Teacher.class);
+		List<Teacher> teacherList = teacherDao.list(Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
 
-		return teacherDao.list(Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
+		Map<String, Object> resultMap = Utility.setResultMap(count, teacherList);
+
+		return resultMap;
 	}
 
 	public List<Teacher> ListAll() {

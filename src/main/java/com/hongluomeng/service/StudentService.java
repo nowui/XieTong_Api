@@ -38,16 +38,16 @@ public class StudentService {
 	private GradeService gradeService = new GradeService();
 	private AuthorizationService authorizationService = new AuthorizationService();
 
-	public Integer count(JSONObject jsonObject) {
+	public Map<String, Object> list(JSONObject jsonObject) {
 		Student studentMap = jsonObject.toJavaObject(Student.class);
 
-		return studentDao.count(studentMap.getGrade_id(), studentMap.getStudent_name());
-	}
+		Integer count = studentDao.count(studentMap.getGrade_id(), studentMap.getStudent_name());
 
-	public List<Student> list(JSONObject jsonObject) {
-		Student studentMap = jsonObject.toJavaObject(Student.class);
+		List<Student> studentList = studentDao.list(studentMap.getGrade_id(), studentMap.getStudent_name(), Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
 
-		return studentDao.list(studentMap.getGrade_id(), studentMap.getStudent_name(), Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
+		Map<String, Object> resultMap = Utility.setResultMap(count, studentList);
+
+		return resultMap;
 	}
 
 	public Student find(JSONObject jsonObject) {

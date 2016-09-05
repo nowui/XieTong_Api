@@ -44,14 +44,14 @@ public class SmsService {
 				sms_code += String.valueOf(random.nextInt(10));
 			}
 
-			TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", "23410942", "7ce98686c9450ccc540b7802140ec659");
+			TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", "23448276", "2ad2e9b7e8d9cf7ca0410f0dbba14b91");
 			AlibabaAliqinFcSmsNumSendRequest req = new AlibabaAliqinFcSmsNumSendRequest();
 			req.setExtend("");
 			req.setSmsType( "normal" );
 			req.setSmsFreeSignName( "大鱼测试" );
 			req.setSmsParamString( "{code:'" + sms_code + "',product:'红萝梦'}" );
 			req.setRecNum(smsMap.getSms_phone());
-			req.setSmsTemplateCode( "SMS_12525470" );
+			req.setSmsTemplateCode( "SMS_14251382" );
 			AlibabaAliqinFcSmsNumSendResponse rsp = client.execute(req);
 
 			JSONObject json = JSONObject.parseObject(rsp.getBody());

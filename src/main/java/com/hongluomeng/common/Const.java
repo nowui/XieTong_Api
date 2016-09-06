@@ -147,6 +147,7 @@ public class Const {
 	public static final String URL_STUDENT_EXPORT = "/student/export";
 	public static final String URL_STUDENT_UPLOAD = "/student/upload";
 	public static final String URL_STUDENT_DELETE_2 = "/student/delete2";
+	public static final String URL_STUDENT_PASSWORD_UPDATE = "/student/password/update";
 	public static final String URL_GRADE_LIST = "/grade/list";
 	public static final String URL_GRADE_FIND = "/grade/find";
 	public static final String URL_GRADE_SAVE = "/grade/save";

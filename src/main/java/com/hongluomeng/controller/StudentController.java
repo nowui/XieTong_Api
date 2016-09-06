@@ -112,4 +112,14 @@ public class StudentController extends BaseController {
         renderJson(Utility.setResponse(CodeEnum.CODE_200, "", null));
 	}
 
+	@Before(StudentValidator.class)
+	@ActionKey(Const.URL_STUDENT_PASSWORD_UPDATE)
+	public void updatePassword() {
+		JSONObject jsonObject = getAttr(Const.KEY_REQUEST);
+
+		studentService.updatePassword(jsonObject);
+
+        renderJson(Utility.setResponse(CodeEnum.CODE_200, "", null));
+	}
+
 }

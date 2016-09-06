@@ -300,4 +300,12 @@ public class StudentService {
 		}
 	}
 
+	public void updatePassword(JSONObject jsonObject) {
+		User userMap = jsonObject.toJavaObject(User.class);
+
+		String request_user_id = jsonObject.getString(Const.KEY_REQUEST_USER_ID);
+
+		userService.updateUser_passwordByUser_id(request_user_id, userMap.getUser_password(), request_user_id);
+	}
+
 }

@@ -49,7 +49,7 @@ public class CourseDao {
 		}
 		sql.append(Course.KEY_COURSE_STATUS + " = 1 ");
 
-		sql.append("ORDER BY " + Course.KEY_COURSE_CREATE_TIME + " DESC ");
+		sql.append("ORDER BY " + Course.KEY_COURSE_CLASS + " ASC ");
 
 		if (n > 0) {
 			sql.append("LIMIT ?, ? ");
@@ -74,7 +74,7 @@ public class CourseDao {
 		sql.append("LEFT JOIN (SELECT * FROM " + CourseApply.KEY_COURSE_APPLY + " WHERE " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_COURSE_APPLY_STATUS + " = 1) AS " + CourseApply.KEY_COURSE_APPLY + " ON " + Course.KEY_COURSE + "." + Course.KEY_COURSE_ID + " = " + CourseApply.KEY_COURSE_APPLY + "." + CourseApply.KEY_COURSE_ID + " ");
 		sql.append("WHERE " + Course.KEY_COURSE + "." + Course.KEY_COURSE_STATUS + " = 1 ");
 		sql.append("AND " + Course.KEY_COURSE + "." + Course.KEY_COURSE_GRADE + " LIKE ? ");
-		sql.append("group by " + Course.KEY_COURSE + "." + Course.KEY_COURSE_ID + " ");
+		sql.append("group by " + Course.KEY_COURSE + "." + Course.KEY_COURSE_CLASS + " ");
 
 		parameterList.add("%" + grade_id + "%");
 

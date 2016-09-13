@@ -242,7 +242,7 @@ public class StudentService {
 
 				List<Grade> gradeList = gradeService.listAll();
 
-				for(int i = 1; i < trLength; i++) {
+				for(int i = 1; i <= trLength; i++) {
 					HSSFRow row = sheet.getRow(i);
 
 					HSSFCell gradeCell = row.getCell(0);

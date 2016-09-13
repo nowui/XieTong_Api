@@ -48,7 +48,7 @@ public class GradeDao {
 		}
 		sql.append(Grade.KEY_GRADE_STATUS + " = 1 ");
 
-		sql.append("ORDER BY " + Grade.KEY_GRADE_SORT + ", " + Grade.KEY_GRADE_CREATE_TIME + " DESC ");
+		sql.append("ORDER BY " + Grade.KEY_GRADE_NAME + " ");
 
 		if (n > 0) {
 			sql.append("LIMIT ?, ? ");

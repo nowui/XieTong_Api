@@ -497,4 +497,10 @@ public class CourseService {
 		return courseApplyService.listMyCourseApply(request_user_id);
 	}
 
+	public void deleteApply(JSONObject jsonObject) {
+		String request_user_id = jsonObject.getString(Const.KEY_REQUEST_USER_ID);
+
+		courseApplyService.deleteAll(request_user_id);
+	}
+
 }

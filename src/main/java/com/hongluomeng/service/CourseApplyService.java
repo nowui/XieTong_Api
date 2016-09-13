@@ -49,4 +49,8 @@ public class CourseApplyService {
 		courseApplyDao.delete(course_id, request_user_id);
 	}
 
+	public void deleteAll(String request_user_id) {
+		courseApplyDao.deleteAll(request_user_id);
+	}
+
 }

@@ -124,7 +124,7 @@ public class TeacherService {
 	public Map<String, Object> login(JSONObject jsonObject) {
 		User userMap = jsonObject.toJavaObject(User.class);
 
-		User user =  userService.loginByUser_accountAndUser_password(userMap.getUser_account(), userMap.getUser_password());
+		User user =  userService.loginByUser_accountAndUser_passwordAndUser_type(userMap.getUser_account(), userMap.getUser_password(), UserEnum.TEACHER.getKey());
 
 		if(user == null) {
 			return null;

@@ -177,7 +177,7 @@ public class StudentService {
 	public Map<String, Object> login(JSONObject jsonObject) {
 		User userMap = jsonObject.toJavaObject(User.class);
 
-		User user = userService.loginByUser_accountAndUser_password(userMap.getUser_account(), userMap.getUser_password());
+		User user = userService.loginByUser_accountAndUser_passwordAndUser_type(userMap.getUser_account(), userMap.getUser_password(), UserEnum.STUDENT.getKey());
 
 		if(user == null) {
 			return null;

@@ -235,4 +235,15 @@ public class CourseApplyDao {
 		Db.update(sql.toString(), parameterList.toArray());
 	}
 
+	public void deleteAll(String request_user_id) {
+		List<Object> parameterList = new ArrayList<Object>();
+
+		StringBuffer sql = new StringBuffer("UPDATE " + CourseApply.KEY_COURSE_APPLY + " SET " + CourseApply.KEY_COURSE_APPLY_STATUS + " = 0, " + CourseApply.KEY_COURSE_APPLY_UPDATE_USER_ID + " = ?, " + CourseApply.KEY_COURSE_APPLY_UPDATE_TIME + " = ? WHERE " + CourseApply.KEY_COURSE_APPLY_STATUS + " = 1 ");
+
+		parameterList.add(request_user_id);
+		parameterList.add(new Date());
+
+		Db.update(sql.toString(), parameterList.toArray());
+	}
+
 }

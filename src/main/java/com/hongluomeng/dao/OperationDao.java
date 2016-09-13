@@ -142,6 +142,9 @@ public class OperationDao {
 
 		List<Operation> operationList = operation.find(sql.toString(), parameterList.toArray());
 
+		System.out.println(sql.toString());
+		System.out.println(user_id);
+
 		return operationList;
 	}
 

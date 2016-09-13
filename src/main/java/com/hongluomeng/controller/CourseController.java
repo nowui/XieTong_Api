@@ -125,4 +125,14 @@ public class CourseController extends BaseController {
         renderJson(Utility.setResponse(CodeEnum.CODE_200, "", courseApplyList));
 	}
 
+	@Before(CourseValidator.class)
+	@ActionKey(Const.URL_COURSE_APPLY_DELETE)
+	public void deleteApply() {
+		JSONObject jsonObject = getAttr(Const.KEY_REQUEST);
+
+		courseService.deleteApply(jsonObject);
+
+        renderJson(Utility.setResponse(CodeEnum.CODE_200, "", null));
+	}
+
 }

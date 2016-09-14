@@ -74,28 +74,28 @@ public class CourseApply extends Model<CourseApply> {
 		return getStr(KEY_COURSE_ADDRESS);
 	}
 
-	public void setCourseApply_create_user_id(String courseApply_create_user_id) {
-		set(KEY_COURSE_APPLY_CREATE_USER_ID, courseApply_create_user_id);
+	public void setCourse_apply_create_user_id(String course_apply_create_user_id) {
+		set(KEY_COURSE_APPLY_CREATE_USER_ID, course_apply_create_user_id);
 	}
 
-	public void setCourseApply_create_time(Date courseApply_create_time) {
-		set(KEY_COURSE_APPLY_CREATE_TIME, courseApply_create_time);
+	public void setCourse_apply_create_time(Date course_apply_create_time) {
+		set(KEY_COURSE_APPLY_CREATE_TIME, course_apply_create_time);
 	}
 
-	public void setCourseApply_update_user_id(String courseApply_update_user_id) {
-		set(KEY_COURSE_APPLY_UPDATE_USER_ID, courseApply_update_user_id);
+	public void setCourse_apply_update_user_id(String course_apply_update_user_id) {
+		set(KEY_COURSE_APPLY_UPDATE_USER_ID, course_apply_update_user_id);
 	}
 
-	public void setCourseApply_update_time(Date courseApply_update_time) {
-		set(KEY_COURSE_APPLY_UPDATE_TIME, courseApply_update_time);
+	public void setCourse_apply_update_time(Date course_apply_update_time) {
+		set(KEY_COURSE_APPLY_UPDATE_TIME, course_apply_update_time);
 	}
 
-	public Boolean getCourseApply_status() {
+	public Boolean getCourse_apply_status() {
 		return getBoolean(KEY_COURSE_APPLY_STATUS);
 	}
 
-	public void setCourseApply_status(Boolean courseApply_status) {
-		set(KEY_COURSE_APPLY_STATUS, courseApply_status);
+	public void setCourse_apply_status(Boolean course_apply_status) {
+		set(KEY_COURSE_APPLY_STATUS, course_apply_status);
 	}
 
 }

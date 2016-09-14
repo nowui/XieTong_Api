@@ -8,6 +8,7 @@ import com.hongluomeng.model.CourseApply;
 public class CourseApplyService {
 
 	private CourseApplyDao courseApplyDao = new CourseApplyDao();
+	private CourseApplyHistoryService courseApplyHistoryService = new CourseApplyHistoryService();
 
 	public Integer countByCourse_id(String course_id) {
 		return courseApplyDao.countByCourse_id(course_id);
@@ -51,6 +52,8 @@ public class CourseApplyService {
 
 	public void deleteAll(String request_user_id) {
 		courseApplyDao.deleteAll(request_user_id);
+
+		courseApplyHistoryService.deleteAll(request_user_id);
 	}
 
 }

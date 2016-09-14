@@ -213,11 +213,11 @@ public class CourseApplyDao {
 		CourseApply courseApply = new CourseApply();
 		courseApply.setCourse_id(course_id);
 		courseApply.setUser_id(request_user_id);
-		courseApply.setCourseApply_create_user_id(request_user_id);
-		courseApply.setCourseApply_create_time(new Date());
-		courseApply.setCourseApply_update_user_id(request_user_id);
-		courseApply.setCourseApply_update_time(new Date());
-		courseApply.setCourseApply_status(true);
+		courseApply.setCourse_apply_create_user_id(request_user_id);
+		courseApply.setCourse_apply_create_time(new Date());
+		courseApply.setCourse_apply_update_user_id(request_user_id);
+		courseApply.setCourse_apply_update_time(new Date());
+		courseApply.setCourse_apply_status(true);
 
 		courseApply.save();
 	}

@@ -25,4 +25,8 @@ public class CourseApplyHistoryService {
 		courseApplyHistoryDao.save(course_id, request_user_id, course_apply_history_is_apply);
 	}
 
+	public void deleteAll(String request_user_id) {
+		courseApplyHistoryDao.deleteAll(request_user_id);
+	}
+
 }

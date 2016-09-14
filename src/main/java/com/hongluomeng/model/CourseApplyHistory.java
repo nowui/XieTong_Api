@@ -14,6 +14,7 @@ public class CourseApplyHistory extends Model<CourseApplyHistory> {
 	public static final String KEY_USER_ID = "user_id";
 	public static final String KEY_COURSE_APPLY_HISTORY_IS_APPLY = "course_apply_history_is_apply";
 	public static final String KEY_COURSE_APPLY_HISTORY_CREATE_TIME = "course_apply_history_create_time";
+	public static final String KEY_COURSE_APPLY_HISTORY_STATUS = "course_apply_history_status";
 
 	public String getCourse_id() {
 		return getStr(KEY_COURSE_ID);
@@ -45,6 +46,14 @@ public class CourseApplyHistory extends Model<CourseApplyHistory> {
 
 	public void setCourse_apply_history_create_time(Date course_apply_history_create_time) {
 		set(KEY_COURSE_APPLY_HISTORY_CREATE_TIME, course_apply_history_create_time);
+	}
+
+	public Boolean getCourse_apply_history_status() {
+		return getBoolean(KEY_COURSE_APPLY_HISTORY_STATUS);
+	}
+
+	public void setCourse_apply_history_status(Boolean course_apply_history_status) {
+		set(KEY_COURSE_APPLY_HISTORY_STATUS, course_apply_history_status);
 	}
 
 }

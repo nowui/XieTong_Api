@@ -41,6 +41,13 @@ public class CourseApplyHistoryDao {
 			isExit = true;
 		}
 
+		if(isExit) {
+			sql.append("AND ");
+		} else {
+			sql.append("WHERE ");
+		}
+		sql.append(CourseApplyHistory.KEY_COURSE_APPLY_HISTORY_STATUS + " = 1 ");
+
 		Number count = Db.queryFirst(sql.toString(), parameterList.toArray());
 		return count.intValue();
 	}
@@ -90,6 +97,13 @@ public class CourseApplyHistoryDao {
 			isExit = true;
 		}
 
+		if(isExit) {
+			sql.append("AND ");
+		} else {
+			sql.append("WHERE ");
+		}
+		sql.append(CourseApplyHistory.KEY_COURSE_APPLY_HISTORY_STATUS + " = 1 ");
+
 		sql.append("ORDER BY " + CourseApplyHistory.KEY_COURSE_APPLY_HISTORY_CREATE_TIME + " DESC ");
 
 		if (n > 0) {
@@ -116,8 +130,17 @@ public class CourseApplyHistoryDao {
 		courseApplyHistory.setUser_id(request_user_id);
 		courseApplyHistory.setCourse_apply_history_is_apply(course_apply_history_is_apply);
 		courseApplyHistory.setCourse_apply_history_create_time(new Date());
+		courseApplyHistory.setCourse_apply_history_status(true);
 
 		courseApplyHistory.save();
+	}
+
+	public void deleteAll(String request_user_id) {
+		List<Object> parameterList = new ArrayList<Object>();
+
+		StringBuffer sql = new StringBuffer("UPDATE " + CourseApplyHistory.KEY_COURSE_APPLY_HISTORY + " SET " + CourseApplyHistory.KEY_COURSE_APPLY_HISTORY_STATUS + " = 0 WHERE " + CourseApplyHistory.KEY_COURSE_APPLY_HISTORY_STATUS + " = 1 ");
+
+		Db.update(sql.toString(), parameterList.toArray());
 	}
 
 }

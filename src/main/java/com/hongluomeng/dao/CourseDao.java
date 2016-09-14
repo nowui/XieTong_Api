@@ -18,6 +18,30 @@ public class CourseDao {
 
 		Boolean isExit = false;
 
+		if (! Utility.isNullOrEmpty(course.getCourse_class())) {
+			if(isExit) {
+				sql.append("AND ");
+			} else {
+				sql.append("WHERE ");
+			}
+			sql.append(Course.KEY_COURSE_CLASS + " = ? ");
+			parameterList.add(course.getCourse_class());
+
+			isExit = true;
+		}
+
+		if (! Utility.isNullOrEmpty(course.getCourse_name())) {
+			if(isExit) {
+				sql.append("AND ");
+			} else {
+				sql.append("WHERE ");
+			}
+			sql.append(Course.KEY_COURSE_NAME + " LIKE ? ");
+			parameterList.add("%" + course.getCourse_name() + "%");
+
+			isExit = true;
+		}
+
 		if(isExit) {
 			sql.append("AND ");
 		} else {
@@ -29,8 +53,10 @@ public class CourseDao {
 		return count.intValue();
 	}
 
-	public Integer count() {
+	public Integer count(String course_name, String course_class) {
 		Course course = new Course();
+		course.setCourse_name(course_name);
+		course.setCourse_class(course_class);
 
 		return count(course);
 	}
@@ -41,6 +67,30 @@ public class CourseDao {
 		StringBuffer sql = new StringBuffer("SELECT * FROM " + Course.KEY_COURSE + " ");
 
 		Boolean isExit = false;
+
+		if (! Utility.isNullOrEmpty(course.getCourse_class())) {
+			if(isExit) {
+				sql.append("AND ");
+			} else {
+				sql.append("WHERE ");
+			}
+			sql.append(Course.KEY_COURSE_CLASS + " = ? ");
+			parameterList.add(course.getCourse_class());
+
+			isExit = true;
+		}
+
+		if (! Utility.isNullOrEmpty(course.getCourse_name())) {
+			if(isExit) {
+				sql.append("AND ");
+			} else {
+				sql.append("WHERE ");
+			}
+			sql.append(Course.KEY_COURSE_NAME + " LIKE ? ");
+			parameterList.add("%" + course.getCourse_name() + "%");
+
+			isExit = true;
+		}
 
 		if(isExit) {
 			sql.append("AND ");
@@ -61,8 +111,10 @@ public class CourseDao {
 		return courseList;
 	}
 
-	public List<Course> list(Integer m, Integer n) {
+	public List<Course> list(String course_name, String course_class, Integer m, Integer n) {
 		Course course = new Course();
+		course.setCourse_name(course_name);
+		course.setCourse_class(course_class);
 
 		return list(course, m, n);
 	}

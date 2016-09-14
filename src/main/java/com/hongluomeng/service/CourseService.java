@@ -35,11 +35,11 @@ public class CourseService {
 	private WebConfigService webConfigService = new WebConfigService();
 
 	public Map<String, Object> list(JSONObject jsonObject) {
-		//Course courseMap = jsonObject.toJavaObject(Course.class);
+		Course courseMap = jsonObject.toJavaObject(Course.class);
 
-		Integer count = courseDao.count();
+		Integer count = courseDao.count(courseMap.getCourse_name(), courseMap.getCourse_class());
 
-		List<Course> courseList = courseDao.list(Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
+		List<Course> courseList = courseDao.list(courseMap.getCourse_name(), courseMap.getCourse_class(), Utility.getStarNumber(jsonObject), Utility.getEndNumber(jsonObject));
 
 		Map<String, Object> resultMap = Utility.setResultMap(count, courseList);
 

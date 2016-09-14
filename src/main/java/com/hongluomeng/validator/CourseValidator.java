@@ -25,6 +25,16 @@ public class CourseValidator extends Validator {
 			isExit = true;
 
 			message += Utility.checkPageAndLimit(jsonObject);
+
+			if(Utility.isNull(course.getCourse_name())) {
+				message += "名称为空";
+				message += Const.LINE_FEED;
+			}
+
+			if(Utility.isNull(course.getCourse_class())) {
+				message += "上课时间为空";
+				message += Const.LINE_FEED;
+			}
 		} else if(actionKey.equals(Const.URL_COURSE_LIST_2)) {
 			isExit = true;
 		} else if(actionKey.equals(Const.URL_COURSE_FIND)) {
